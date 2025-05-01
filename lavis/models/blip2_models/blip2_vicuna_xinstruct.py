@@ -66,7 +66,8 @@ class Blip2VicunaXInstruct(Blip2Base):
 
     SEQUENCIAL_MODALITIES = [
         "video", 
-        "audio"
+        "audio",
+        "image"
     ]
 
     MODALITY_TO_CUE = {
@@ -816,6 +817,7 @@ class Blip2VicunaXInstruct(Blip2Base):
 
         encoder, _ = super().init_vision_encoder(model_name, kwargs['image_size'], kwargs['drop_path_rate'], kwargs['use_grad_checkpoint'], precision)
         ln = self.init_ln(encoder.num_features, load_ln_path=load_ln_path, load_ln_type=load_ln_type)
+        self.image_enc_name = model_name
         return encoder, ln
 
     def init_pc_encoder(
@@ -1268,6 +1270,16 @@ class Blip2VicunaXInstruct(Blip2Base):
                 data_atts[modality] = []
                 for j in range(data.size(1)):
                     this_frame = data[:,j,:,:]
+                    with self.maybe_autocast():
+                        embeds[modality].append(ln(encoder(this_frame)))
+                        if self.shared_qformer:
+                            embeds[modality][j] = getattr(self, f"{modality}_encoder_projection")(embeds[modality][j])
+                    data_atts[modality].append(torch.ones(embeds[modality][j].size()[:-1], dtype=torch.long).to(self.device))
+            elif modality == 'image' and 'clip' in self.image_enc_name:
+                embeds[modality] = []
+                data_atts[modality] = []
+                for j in range(data.size(1)):
+                    this_frame = data[:,j,:,:,:] # B, C, H, W
                     with self.maybe_autocast():
                         embeds[modality].append(ln(encoder(this_frame)))
                         if self.shared_qformer:
