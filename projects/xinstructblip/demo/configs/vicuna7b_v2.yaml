@@ -62,7 +62,7 @@ model:
   few_shot_prob: 0
   qformer_text_input: True
   llm_text_input: True
-  modalities :  ["audio", "video", "pc", "image"]
+  modalities :  ["audio", "video", "image"]
   use_cues: True
   shared_qformer: False
   pretrained_shared_qformer: Null

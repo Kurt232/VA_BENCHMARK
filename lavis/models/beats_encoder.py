@@ -13,7 +13,7 @@ from lavis.common.dist_utils import download_cached_file
 import os 
 
 
-ckp_path =  "https://valle.blob.core.windows.net/share/BEATs/BEATs_iter3_plus_AS2M.pt?sv=2020-08-04&st=2023-03-01T07%3A51%3A05Z&se=2033-03-02T07%3A51%3A00Z&sr=c&sp=rl&sig=QJXmSJG9DbMKf48UDIU1MfzIro8HQOf3sqlNXiflY1I%3D"
+ckp_path =  "https://huggingface.co/camenduru/beats/resolve/main/BEATs_iter3_plus_AS2M_finetuned_on_AS2M_cpt2.pt"
 
 class BeatsEncoder(BaseEncoder):
     def __init__(self, checkpoint_path=ckp_path):
