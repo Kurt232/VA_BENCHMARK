@@ -874,23 +874,15 @@ class Blip2VicunaXInstruct(Blip2Base):
     def init_audio_encoder(
         self, model_name, precision, **kwargs
         ):
-        assert model_name in [
-            'beats'
-        ], "audio model must be in [beats]"
+        assert model_name == 'beats'
 
         load_ln_path = kwargs['load_ln_path']
         del kwargs['load_ln_path']
         load_ln_type=kwargs['load_ln_type']
         del kwargs['load_ln_type']
-        if "beats" in model_name:
-            from lavis.models.beats_encoder import BeatsEncoder
-            if self.cached_audio:
-                audio_encoder = lambda x: x
-                ln_audio = self.init_ln(768, load_ln_path=load_ln_path, load_ln_type=load_ln_type)
-            else:
-                audio_encoder = BeatsEncoder(**kwargs)
-        if not self.cached_audio:
-            ln_audio = self.init_ln(audio_encoder.num_features, load_ln_path=load_ln_path, load_ln_type=load_ln_type)
+        from lavis.models.beats_encoder import BeatsEncoder
+        audio_encoder = BeatsEncoder(**kwargs)
+        ln_audio = self.init_ln(audio_encoder.num_features, load_ln_path=load_ln_path, load_ln_type=load_ln_type)
         self.audio_enc_name = model_name
         return audio_encoder, ln_audio
 

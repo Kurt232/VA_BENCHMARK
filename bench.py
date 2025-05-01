@@ -31,7 +31,7 @@ from lavis.processors.alpro_processors import AlproVideoEvalProcessor
 
 image_pocessor = ClipImageEvalProcessor()
 audio_processor = BeatsAudioProcessor(model_name='iter3', sampling_rate=16000, n_frames=2, is_eval=False, frame_length=512)
-video_processor = AlproVideoEvalProcessor(n_frms=4, image_size=224)
+video_processor = AlproVideoEvalProcessor(n_frms=4, image_size=224) # ! so less?
 
 from lavis.models.blip2_models.blip2_vicuna_xinstruct import Blip2VicunaXInstruct
 model = "vicuna7b_v2"
@@ -303,6 +303,8 @@ def run_task(task_path, task_name):
     if os.path.exists(save_prediction_json):
         print(f'>>> {save_prediction_json} already exists, skip.')
         return
+    else:
+        print(">>> " + task_name + " ...")
     os.makedirs(os.path.dirname(save_prediction_json), exist_ok=True)
 
     dataset = json.load(open(os.path.join(task_path, "data.json"), "r"))
@@ -317,8 +319,6 @@ def run_task(task_path, task_name):
         assert _task == task_name, f'Evaluating {task_name} but found: {_task}'
 
         text_input = get_real_input(data)  # real_input = prompt + options + question
-        # print(f'>>> idx: {idx} | #tot={len(dataset)}\n #text={text_input}', end='\r')
-        print(f'>>> idx: {idx} | #tot={len(dataset)}', end='\r')
         audio_list = data['input'].get('audio_list', None)
         image_list = data['input'].get('image_list', None)
         video = data['input'].get('video', None)

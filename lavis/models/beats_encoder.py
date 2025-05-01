@@ -29,9 +29,10 @@ class BeatsEncoder(BaseEncoder):
             checkpoint = torch.load(checkpoint_path)
 
         cfg = BEATsConfig(checkpoint['cfg'])
+        cfg.finetuned_model = False
         self.num_features = cfg.encoder_embed_dim
         self.model = BEATs(cfg)
-        self.model.load_state_dict(checkpoint['model'])
+        self.model.load_state_dict(checkpoint['model'], strict=False)
         self.model.eval()
 
     @classmethod
