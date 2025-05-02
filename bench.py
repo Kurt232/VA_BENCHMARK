@@ -31,7 +31,7 @@ from lavis.processors.alpro_processors import AlproVideoEvalProcessor
 
 image_pocessor = ClipImageEvalProcessor()
 audio_processor = BeatsAudioProcessor(model_name='iter3', sampling_rate=16000, n_frames=2, is_eval=False, frame_length=512)
-video_processor = AlproVideoEvalProcessor(n_frms=4, image_size=224) # ! so less?
+video_processor = AlproVideoEvalProcessor(n_frms=10, image_size=224) # ! so less?
 
 from lavis.models.blip2_models.blip2_vicuna_xinstruct import Blip2VicunaXInstruct
 model = "vicuna7b_v2"
@@ -58,7 +58,7 @@ def predict(
     video=None,
     qformer_prompt=None,
     min_len=1, 
-    max_len=200, 
+    max_len=512, 
     beam_size=3, 
     len_penalty=-1., 
     repetition_penalty=1, 
