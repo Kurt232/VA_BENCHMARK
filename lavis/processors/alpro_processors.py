@@ -142,15 +142,6 @@ class AlproVideoTrainProcessor(AlproVideoBaseProcessor):
                 width=self.image_size,
                 sampling="headtail",
             )
-            # clip = load_clip(
-            #     video_path=vpath, 
-            #     num_frames=self.n_frms, 
-            #     target_height=self.image_size, 
-            #     target_width=self.image_size,
-            #     start_time=start_sec,
-            #     end_time=end_sec, 
-            #     sampling="headtail"
-            #     )
         else:
             clip = load_clip(
                 video_path=vpath, 
@@ -231,8 +222,6 @@ class AlproVideoEvalProcessor(AlproVideoBaseProcessor):
                 num_frames=self.n_frms, 
                 target_height=self.image_size, 
                 target_width=self.image_size,
-                start_time=start_sec,
-                end_time=end_sec, 
                 sampling="headtail"
                 )
         else:

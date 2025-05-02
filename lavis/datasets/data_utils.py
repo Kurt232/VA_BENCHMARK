@@ -332,6 +332,8 @@ def head_tail_frame_sampling(video_path, num_frames, target_height, target_width
         cap.set(cv2.CAP_PROP_POS_FRAMES, frame_index)
         ret, frame = cap.read()
         if not ret:
+            if len(frames) == 0:
+                continue
             break
         frame = cv2.resize(frame, (target_width, target_height))
         frames.append(frame)
