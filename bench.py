@@ -1,9 +1,9 @@
 import os
 import json
-root_path="../../Bench/data/levels/"
+root_path="../../data1/levels/"
 excluded_tasks=[]
 model_name="X-Instruct-Blip-7B"
-
+save_path="../wjdu_AVL"
 LLM_MODEL_PATH = "./vicuna"
 
 import torch
@@ -128,13 +128,12 @@ mvic_cls_list = ['sushi', 'banana', 'cake', 'butterfly', 'bird', 'microphone', '
         'not sure', 'no available option']
 
 prompt_avl = """
-        In each video frame, there may be multiple categories of sound-emitting instances. Each category can have several instances. 
+        Based on the given image and audio, there may be multiple sounding instances.
         You can choose instance categories from the given categories list.
         The naming format for instances is: category_id. Instance IDs start from 1, e.g., male_1, dog_2, dog_3, cat_4. 
-        It is crucial that the instance names (i.e., category_id) remain consistent for the same instances across different frames.
         The bbox format is: [x, y, w, h], where x and y represent the coordinates of the top-left corner, and w and h are the width and height. 
         The final answer must strictly adhere to the following format: 
-        answer={"frame_0": {"guzheng_1": "[269, 198, 83, 16]", "guzheng_2": "[147, 196, 75, 13]", "female_3": "[152, 108, 123, 36]"}, "frame_1": ..., "frame_n": ...}
+        answer={"guzheng_1": "[269, 198, 83, 16]", "guzheng_2": "[147, 196, 75, 13]", "female_3": "[152, 108, 123, 36]"}
     """
 
 avl_cls_list = ['dog', 'clarinet', 'banjo', 'cat', 'guzheng', 'tree', 'lion', 'tuba', 
@@ -299,7 +298,7 @@ def get_real_input(d: dict):
     return text_input
 
 def run_task(task_path, task_name):
-    save_prediction_json = f'./results/{model_name}/tasks/{task_name}.json'
+    save_prediction_json = f'{save_path}/{model_name}/tasks/{task_name}.json'
     if os.path.exists(save_prediction_json):
         print(f'>>> {save_prediction_json} already exists, skip.')
         return
