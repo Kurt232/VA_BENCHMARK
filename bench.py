@@ -1,10 +1,10 @@
 import os
 import json
 from definitions import *
-root_path="../../data2/data/"
+root_path="/home/jiangli/wjdu/data3/data"
 excluded_tasks=[]
+save_path="../wjdu0512/"
 model_name="X-Instruct-Blip-7B"
-save_path="../wjdu0507/"
 
 LLM_MODEL_PATH = "./vicuna"
 
@@ -183,15 +183,22 @@ def run_task(task_path, task_name):
         audio_list = data['input'].get('audio_list', None)
         image_list = data['input'].get('image_list', None)
         video = data['input'].get('video', None)
-
+        if video is not None:
+            video = None if "NO_USE" in video else video
         # replace data src prefix.
         if audio_list is not None:
             for idx, aud in enumerate(audio_list):
+                if "NO_USE" in aud:
+                    audio_list = None
+                    break
                 audio_list[idx] = aud.replace('./input', f'{task_path}/input')
                 assert os.path.exists(audio_list[idx]), f'Not found - audio: {audio_list[idx]}'
 
         if image_list is not None:
             for idx, img in enumerate(image_list):
+                if "NO_USE" in img:
+                    image_list = None
+                    break
                 image_list[idx] = img.replace('./input', f'{task_path}/input')
                 assert os.path.exists(image_list[idx]), f'Not found - image: {image_list[idx]}'
 
