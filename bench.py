@@ -1,9 +1,9 @@
 import os
 import json
 from definitions import *
-root_path="/home/jiangli/wjdu/data3/data"
+root_path="/home/jiangli/wjdu/data4/levels"
 excluded_tasks=[]
-save_path="../wjdu0512/"
+save_path="../wjdu0514/"
 model_name="X-Instruct-Blip-7B"
 
 LLM_MODEL_PATH = "./vicuna"
